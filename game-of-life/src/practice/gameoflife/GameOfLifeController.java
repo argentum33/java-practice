@@ -32,9 +32,9 @@ public class GameOfLifeController extends JFrame {
 		this.getContentPane().add(view);
 		
 		// make sure the window can't be resized
-        this.setResizable(false);
+        	this.setResizable(false);
         
-        // set the size of the window to be large enough to contain its elements
+        	// set the size of the window to be large enough to contain its elements
 		this.pack();
 		
 		// make the window visible
