@@ -1,18 +1,58 @@
 package practice.gameoflife;
 
+import java.util.Random;
+
 /**
  * A class to simulate Conway's Game of Life
  * 
  * @author Tiffani Singley
  *
  */
-public class GameOfLife {
+public class GameOfLifeModel {
 	
 	private boolean[][] gameBoard;
+	private final int columns;
+	private final int rows;
+	
+	public GameOfLifeModel() {
+		this(25, 25);
 
+	}
 	
+	public GameOfLifeModel(int columns, int rows) {
+		this(columns, rows, 60);
+
+	}
+
+	public GameOfLifeModel(int columns, int rows, int threshold) {
+		this(columns, rows, threshold, new Random());
+	}
 	
-	public GameOfLife(boolean[][] newGameBoard) {
+	public GameOfLifeModel(int columns, int rows, int threshold, int seed) {
+		this(columns, rows, threshold, new Random(seed));
+	}
+	
+
+	private GameOfLifeModel(int columns, int rows, int threshold, Random rand) {
+		boolean [][] board = new boolean[columns][rows];
+		
+		threshold = (threshold > 100)? 100 : ((threshold < 0) ? 0 : threshold);
+		columns = (columns < 5) ? 5 : columns ;
+		rows = (rows < 5) ? 5 : rows ;
+
+		
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board[0].length; j++) {
+				board[j][i] = (rand.nextInt(100) >= threshold)? true : false;
+			}
+		}
+		
+		this.gameBoard = board;
+		this.columns = columns;
+		this.rows = rows;
+	}
+	
+	public GameOfLifeModel(boolean[][] newGameBoard) {
 		gameBoard = new boolean[newGameBoard.length][newGameBoard[0].length];
 		
 		for(int i = 0; i < newGameBoard.length; i++) {
@@ -20,6 +60,9 @@ public class GameOfLife {
 				gameBoard[i][j] = newGameBoard[i][j];
 			}
 		}
+		
+		columns = newGameBoard.length;
+		rows = newGameBoard[0].length;
 	}
 	
 	/**
@@ -184,6 +227,22 @@ public class GameOfLife {
 	}
 	
 	/**
+	 * returns the number of columns in the gameboard
+	 * @return columns - the number of columns in the gameboard
+	 */
+	public int getColumns() {
+		return columns;
+	}
+	
+	/**
+	 * returns the number of rows in the gameboard
+	 * @return rows - the number of columns in the gameboard
+	 */
+	public int getRows() {
+		return rows;
+	}
+	
+	/**
 	 * Returns the current state of the game as a string
 	 * 
 	 * @return - The current state of the game as a string
@@ -201,33 +260,5 @@ public class GameOfLife {
 		return stringBoard;
 	}
 	
-
-	/**
-	 * Main method for testing purposes
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		boolean [][] test = new boolean[6][6];
-		
-		test[0][0] = true;
-		test[0][1] = true;
-		test[1][1] = true;
-		test[2][2] = true;
-		test[0][2] = true;
-		test[2][0] = true;
-		test[2][1] = true;
-		
-		GameOfLife testGame = new GameOfLife(test);
-		
-		System.out.println(testGame.toString());
-		
-		for(int i = 0; i < 12; i++) {
-			testGame.runSimulation(1);
-			
-			System.out.println(testGame.toString());
-		}
-		
-
-	}
 
 }
