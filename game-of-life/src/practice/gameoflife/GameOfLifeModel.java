@@ -34,35 +34,40 @@ public class GameOfLifeModel {
 	
 
 	private GameOfLifeModel(int columns, int rows, int threshold, Random rand) {
-		boolean [][] board = new boolean[columns][rows];
 		
 		threshold = (threshold > 100)? 100 : ((threshold < 0) ? 0 : threshold);
 		columns = (columns < 5) ? 5 : columns ;
 		rows = (rows < 5) ? 5 : rows ;
+		
+		this.columns = columns;
+		this.rows = rows;
+		boolean [][] board = new boolean[rows][columns];
 
 		
-		for(int i = 0; i < board.length; i++) {
-			for(int j = 0; j < board[0].length; j++) {
-				board[j][i] = (rand.nextInt(100) >= threshold)? true : false;
+		for(int i = 0; i < this.rows; i++) {
+			for(int j = 0; j < this.columns; j++) {
+				board[i][j] = (rand.nextInt(100) >= threshold)? true : false;
 			}
 		}
 		
 		this.gameBoard = board;
-		this.columns = columns;
-		this.rows = rows;
+
 	}
 	
 	public GameOfLifeModel(boolean[][] newGameBoard) {
-		gameBoard = new boolean[newGameBoard.length][newGameBoard[0].length];
+		rows = newGameBoard.length;
+		columns = newGameBoard[0].length;
+
 		
-		for(int i = 0; i < newGameBoard.length; i++) {
-			for(int j = 0; j < newGameBoard.length; j++) {
+		gameBoard = new boolean[rows][columns];
+		
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
 				gameBoard[i][j] = newGameBoard[i][j];
 			}
 		}
 		
-		columns = newGameBoard.length;
-		rows = newGameBoard[0].length;
+
 	}
 	
 	/**
@@ -73,10 +78,10 @@ public class GameOfLifeModel {
 	private void gotoNextGeneration() {
 		boolean[][] gameBoardCopy = getGameBoard();
 		
-		for(int i = 0; i < gameBoard.length; i++) {
-			for(int j = 0; j < gameBoard.length; j++) {
-				boolean currentState = gameBoard[j][i];
-				int numNeighbors = getNumNeighbors(j, i);
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				boolean currentState = gameBoard[i][j];
+				int numNeighbors = getNumNeighbors(i, j);
 				
 				
 				if(currentState) {
@@ -97,7 +102,7 @@ public class GameOfLifeModel {
 				}
 
 				
-				gameBoardCopy[j][i] = currentState;
+				gameBoardCopy[i][j] = currentState;
 				
 			}
 		}
@@ -110,83 +115,83 @@ public class GameOfLifeModel {
 	/**
 	 * Gets the number of live neighbors for a given cell
 	 * 
-	 * @param column - the column in which the specified cell exists
-	 * @param row - the row in which the specified cell exists
+	 * @param row - the column in which the specified cell exists
+	 * @param column - the row in which the specified cell exists
 	 * @return the number of live neighbors for the specified cell
 	 */
-	private int getNumNeighbors(int column, int row) {
+	private int getNumNeighbors(int row, int column) {
 		int numNeighbors = 0;
 		
 		try {
 			
-			if(column == 0 && row == 0) {
+			if(row == 0 && column == 0) {
 				// cell is in the top left
-				numNeighbors += (gameBoard[column + 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column][row + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
 				
-			} else if (column == gameBoard.length - 1 && row == gameBoard[0].length - 1) {
-				// cell cell is in the bottom right
-				numNeighbors += (gameBoard[column][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row])? 1 : 0;
+			} else if (row == rows - 1 && column == columns - 1) {
+				// cell is in the bottom right
+				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column])? 1 : 0;
 				
-			} else if (column == gameBoard.length - 1 && row == 0) {
-				// cell is in the top right corner
-				numNeighbors += (gameBoard[column - 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column][row + 1])? 1 : 0;
-	
-			} else if (column == 0 && row == gameBoard[0].length - 1) {
+			} else if (row == rows - 1 && column == 0) {
 				// cell is in the bottom left corner
-				numNeighbors += (gameBoard[column][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
+	
+			} else if (row == 0 && column == columns - 1) {
+				// cell is in the top right corner
+				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
 				
 			} else if (column == 0) {
 				// cell borders the left side of the game board
-				numNeighbors += (gameBoard[column][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column][row + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
 				
-			} else if( row == 0) {
+			} else if(row == 0) {
 				// cell borders the top of the game board
-				numNeighbors += (gameBoard[column + 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
 				
-			} else if(column == gameBoard.length - 1) {
+			} else if(column == columns - 1) {
 				// cell borders the right side of the game board
-				numNeighbors += (gameBoard[column][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column][row + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
 				
-			} else if (row == gameBoard[0].length - 1) {
+			} else if (row == rows - 1) {
 				// cell borders the bottom of the game board
-				numNeighbors += (gameBoard[column][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row])? 1 : 0;
+				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
 	
 				
 			} else {
 				// need to check all 8 sides
-				numNeighbors += (gameBoard[column][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column + 1][row])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row - 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
 				
-				numNeighbors += (gameBoard[column + 1][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column][row + 1])? 1 : 0;
-				numNeighbors += (gameBoard[column - 1][row + 1])? 1 : 0;
+				numNeighbors += (gameBoard[row + 1][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
+				numNeighbors += (gameBoard[row - 1][column - 1])? 1 : 0;
 			
 		}
 		} catch(Exception e) {
@@ -215,10 +220,10 @@ public class GameOfLifeModel {
 	 * @return a copy of the current state of the game
 	 */
 	public boolean[][] getGameBoard() {
-		boolean[][] gameBoardCopy = new boolean[gameBoard.length][gameBoard[0].length];
+		boolean[][] gameBoardCopy = new boolean[rows][columns];
 		
-		for(int i = 0; i < gameBoard.length; i++) {
-			for(int j = 0; j < gameBoard[0].length; j++) {
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
 				gameBoardCopy[i][j] = gameBoard[i][j];
 			}
 		}
@@ -250,15 +255,16 @@ public class GameOfLifeModel {
 	@Override
 	public String toString() {
 		String stringBoard = "";
-		for(int i = 0; i < gameBoard.length; i++) {
-			for(int j = 0; j < gameBoard[0].length; j++) {
-				stringBoard += (gameBoard[j][i]) ? "[X]" : "[ ]";
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				stringBoard += (gameBoard[i][j]) ? "[X]" : "[ ]";
 			}
 			stringBoard += "\n";
 		}
 		
 		return stringBoard;
 	}
+	
 	
 
 }

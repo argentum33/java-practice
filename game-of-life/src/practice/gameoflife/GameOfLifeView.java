@@ -25,7 +25,7 @@ public class GameOfLifeView extends JPanel {
 		this.game = game;
 		boolean[][] gameBoard = game.getGameBoard();
 		this.setLayout(new BorderLayout());
-		this.setPreferredSize(new Dimension(gameBoard.length * 20, gameBoard.length * 20));
+		this.setPreferredSize(new Dimension(game.getColumns() * 20, game.getRows() * 20));
 
 
 	}
@@ -38,10 +38,12 @@ public class GameOfLifeView extends JPanel {
 	    Graphics2D g2 = (Graphics2D) g;
 	    
 		boolean[][] gameBoard = game.getGameBoard();
+		int rows = game.getRows();
+		int columns = game.getColumns();
 		
-		for(int i = 0; i < gameBoard.length; i++) {
-			for(int j = 0; j < gameBoard[0].length; j++) {
-				if(gameBoard[j][i]) {
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				if(gameBoard[i][j]) {
 					g2.setColor(Color.BLACK);
 					g2.fillRect(j * 20, i * 20, 20, 20);
 				} else {
