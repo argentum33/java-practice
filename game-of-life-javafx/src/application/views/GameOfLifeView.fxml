@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import application.components.GameOfLifeComponent?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.Button?>
+
+	
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.GameOfLifeController" style="-fx-background-color:#CBD6D9; -fx-border-color:black; -fx-border-width:3; -fx-border-style:solid;">
+	<padding><Insets top="7" bottom="7" left="7" right="7" ></Insets></padding>
+	<children>
+		<VBox style="-fx-background-color:#00687F; -fx-border-color:black; -fx-border-width:5; -fx-border-style:solid; ">
+			<padding><Insets top="7" bottom="7" left="7" right="7" ></Insets></padding>
+			<children>
+				<VBox style="-fx-border-color:black; -fx-border-width:3; -fx-border-style:solid;  ">
+					<children>
+						<GameOfLifeComponent fx:id="gameOfLifeComponent" />
+					</children>
+				</VBox>
+			</children>
+		</VBox>
+		<HBox alignment="CENTER" spacing="10">
+			<padding><Insets left="2" top="7" bottom="7" ></Insets></padding>
+			<Button fx:id="play" text="Play" style="-fx-background-color:#003C4C; -fx-text-fill:white;"></Button>
+			<Button fx:id="stop" disable="true" text="Stop" style="-fx-background-color:#003C4C; -fx-text-fill:white;"></Button>
+			<Button fx:id="newRandom" text="New Random Game" style="-fx-background-color:#003C4C; -fx-text-fill:white;"></Button>
+			<Button fx:id="reset" text="Reset" style="-fx-background-color:#003C4C; -fx-text-fill:white;"></Button>
+		</HBox>
+	</children>
+</VBox>
