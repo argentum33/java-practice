@@ -115,8 +115,8 @@ public class GameOfLifeModel {
 	/**
 	 * Gets the number of live neighbors for a given cell
 	 * 
-	 * @param row - the column in which the specified cell exists
-	 * @param column - the row in which the specified cell exists
+	 * @param row - the row in which the specified cell exists
+	 * @param column - the column in which the specified cell exists
 	 * @return the number of live neighbors for the specified cell
 	 */
 	private int getNumNeighbors(int row, int column) {
@@ -188,7 +188,6 @@ public class GameOfLifeModel {
 				numNeighbors += (gameBoard[row][column + 1])? 1 : 0;
 				numNeighbors += (gameBoard[row + 1][column + 1])? 1 : 0;
 				numNeighbors += (gameBoard[row + 1][column])? 1 : 0;
-				
 				numNeighbors += (gameBoard[row + 1][column - 1])? 1 : 0;
 				numNeighbors += (gameBoard[row][column - 1])? 1 : 0;
 				numNeighbors += (gameBoard[row - 1][column - 1])? 1 : 0;
