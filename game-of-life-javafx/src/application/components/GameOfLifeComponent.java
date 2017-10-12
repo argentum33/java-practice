@@ -18,13 +18,9 @@ public class GameOfLifeComponent extends Canvas {
 	int sideLength = 15;
 
 	
-	public GameOfLifeComponent() {
-		super();
-		
-	}
+	public GameOfLifeComponent() {	}
 	
 	public GameOfLifeComponent(GameOfLifeModel model) {
-		super();
 		this.model = model;
 		this.setHeight(model.getRows() * sideLength);
 		this.setWidth(model.getColumns() * sideLength);

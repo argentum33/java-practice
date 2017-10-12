@@ -22,6 +22,7 @@ public class GameOfLifeController{
 	@FXML private Button stop;
 	@FXML private Button reset;
 	@FXML private Button newRandom;
+	
 	private GameOfLifeModel model;
 	private boolean[][] copy;
 	private Timeline gameOfLifeTimeline;
@@ -36,6 +37,7 @@ public class GameOfLifeController{
 	public void initialize() {
 		model = new GameOfLifeModel();
 		copy = model.getGameBoard();
+		
 		gameOfLifeComponent.setModel(model);
 		gameOfLifeComponent.updateView();
 		
@@ -54,7 +56,14 @@ public class GameOfLifeController{
 		
 		gameOfLifeTimeline.setCycleCount(Timeline.INDEFINITE);
 		
+		initEventListeners();
 		
+	}
+	
+	/**
+	 * Initializes Event Listeners
+	 */
+	private void initEventListeners() {
 		// action for the play button to play the animation and update the view
 		play.setOnAction(new EventHandler<ActionEvent>(){
 
@@ -106,7 +115,6 @@ public class GameOfLifeController{
 				gameOfLifeComponent.updateView();
 			}
 		});
-		
 	}
 	
 	/**
